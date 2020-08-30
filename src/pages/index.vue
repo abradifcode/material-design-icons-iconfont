@@ -47,8 +47,7 @@
                      v-if="!filteredIcons.length">
 
                     <div class="icons-gallery-content-gallery-no-filter-results-message">
-                        <div class="icons-gallery-content-gallery-no-filter-results-message-icon">🤣</div>
-                        <div class="icons-gallery-content-gallery-no-filter-results-message-text">HA! Nothing found for "{{filter}}".</div>
+                        <div class="icons-gallery-content-gallery-no-filter-results-message-text">Couldn't find an icon for "{{filter}}".</div>
                         <div class="icons-gallery-content-gallery-no-filter-results-message-button" v-on:click="filter=''">reset search filter</div>
                     </div>
                 </div>
