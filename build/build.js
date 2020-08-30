@@ -62,6 +62,11 @@ async function readFontLigatures(fontFilePath) {
                 let character = font.stringsForGlyph(ligature.glyph)[0];
                 let characterCode = character.charCodeAt(0).toString(16).toUpperCase();
 
+                // see https://github.com/jossef/material-design-icons-iconfont/pull/57
+                if (characterCode === 'DBFF'){
+                    characterCode = 'EBFF'
+                }
+
                 let ligatureText = ligature
                     .components
                     .map(x => font.stringsForGlyph(x)[0])
@@ -134,12 +139,6 @@ async function buildScss(sourceScssFilePath, outputCssFilePath) {
 async function main() {
 
 
-    let sourceScssFilePath = path.resolve(srcDirPath, 'material-design-icons.scss');
-    let outputCssFilePath = path.resolve(outputDirPath, 'material-design-icons.css');
-
-    await buildScss(sourceScssFilePath, outputCssFilePath);
-    return;
-
     if (!await promisify(fs.exists)(outputFontsDirPath)) {
         await promisify(mkdirp)(outputFontsDirPath);
     }
@@ -186,17 +185,13 @@ async function main() {
             console.log(`generating codepoints to "${outputVariablesScssFilePath}" ...`);
             await writeVariablesSCSSFile(outputVariablesScssFilePath, fontLigatures);
 
-
             let sourceScssFilePath = path.resolve(srcDirPath, 'material-design-icons.scss');
             let outputCssFilePath = path.resolve(outputDirPath, 'material-design-icons.css');
 
-            console.log(`generating css file "${cssFilePath}" ...`);
-            await promisify(sass.render)({
-                file: sourceScssFilePath,
-                outFile: outputCssFilePath
-            });
+            await buildScss(sourceScssFilePath, outputCssFilePath);
         }
     }));
+
 }
 
 
